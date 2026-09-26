@@ -12,7 +12,7 @@
 
 - [x] Token authentication
 - [ ] Role and resource authorization
-- [ ] Customer management
+- [x] Customer management
 - [ ] Product and service catalog
 - [ ] Invoice creation and line-item totals
 - [ ] Controlled invoice lifecycle
