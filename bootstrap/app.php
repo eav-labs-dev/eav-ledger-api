@@ -38,6 +38,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return ApiResponse::error(
                 code: match ($status) {
+                    401 => 'AUTHENTICATION_REQUIRED',
+                    403 => 'FORBIDDEN',
                     404 => 'RESOURCE_NOT_FOUND',
                     405 => 'METHOD_NOT_ALLOWED',
                     422 => 'VALIDATION_FAILED',
