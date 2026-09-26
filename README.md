@@ -33,6 +33,8 @@ The API runs at `http://localhost:8000`. Verify it with:
 curl http://localhost:8000/api/v1/health
 ```
 
+Authentication uses Laravel Sanctum bearer tokens. Register with `POST /api/v1/auth/register`, log in with `POST /api/v1/auth/login`, and send the returned token as `Authorization: Bearer <token>` to access `GET /api/v1/auth/me` and `POST /api/v1/auth/logout`.
+
 ## Response contract
 
 Every API response uses the same top-level fields:
