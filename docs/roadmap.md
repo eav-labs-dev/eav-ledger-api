@@ -6,7 +6,7 @@
 - [x] Stable API response envelope
 - [x] Health endpoint and baseline tests
 - [x] GitHub Actions verification
-- [ ] Docker and PostgreSQL development environment
+- [x] Docker and PostgreSQL development environment
 
 ## Billing MVP
 

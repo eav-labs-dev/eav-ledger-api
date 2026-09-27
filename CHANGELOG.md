@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added a non-root production image, PostgreSQL Compose environment, container smoke-test CI, and deployment notes.
 - Added the Laravel 13 API foundation, stable response envelope, health endpoint, baseline tests, and CI.
 
 ## 0.1.0 - Portfolio Rebuild Started
