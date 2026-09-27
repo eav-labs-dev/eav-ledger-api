@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added owner-scoped product and service catalog CRUD with pricing, filters, sorting, and pagination.
 - Added authenticated customer CRUD with ownership isolation, filtering, sorting, and pagination.
 - Added Sanctum token registration, login, current-user, and logout endpoints.
 - Added the Laravel 13 API foundation, stable response envelope, health endpoint, baseline tests, and CI.
