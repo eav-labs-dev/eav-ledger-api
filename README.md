@@ -8,6 +8,8 @@ The Laravel 13 API is deployed from `main` to Oracle Cloud Infrastructure throug
 
 - Live API: [https://ledger.env.pm](https://ledger.env.pm)
 - Health check: [https://ledger.env.pm/api/v1/health](https://ledger.env.pm/api/v1/health)
+- API documentation: [https://ledger.env.pm/docs](https://ledger.env.pm/docs)
+- OpenAPI spec: [https://ledger.env.pm/openapi.json](https://ledger.env.pm/openapi.json)
 
 Billing capabilities continue to be delivered incrementally through reviewed pull requests.
 
@@ -95,6 +97,8 @@ https://ledger.env.pm
 ```
 
 The API binds only to `127.0.0.1:8081` on the host and Caddy exposes it over HTTPS. The existing container entrypoint applies Laravel migrations automatically when `RUN_MIGRATIONS=true`.
+
+Interactive Swagger UI documentation is available at [https://ledger.env.pm/docs](https://ledger.env.pm/docs), backed by the versioned OpenAPI specification at [https://ledger.env.pm/openapi.json](https://ledger.env.pm/openapi.json).
 
 ## Verification
 
