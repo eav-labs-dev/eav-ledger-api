@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Database\Factories\CatalogItemFactory;
+use Database\Factories\InvoiceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,18 +11,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'owner_id',
-    'catalog_number',
-    'type',
-    'sku',
-    'name',
-    'description',
-    'unit_price',
-    'currency',
+    'customer_id',
+    'invoice_number',
     'status',
+    'issue_date',
+    'due_date',
+    'currency',
+    'subtotal',
+    'tax_total',
+    'total',
+    'notes',
 ])]
-class CatalogItem extends Model
+class Invoice extends Model
 {
-    /** @use HasFactory<CatalogItemFactory> */
+    /** @use HasFactory<InvoiceFactory> */
     use HasFactory;
 
     /** @return BelongsTo<User, $this> */
@@ -31,8 +33,14 @@ class CatalogItem extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    /** @return BelongsTo<Customer, $this> */
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     /** @return HasMany<InvoiceLine, $this> */
-    public function invoiceLines(): HasMany
+    public function lines(): HasMany
     {
         return $this->hasMany(InvoiceLine::class);
     }
@@ -40,6 +48,12 @@ class CatalogItem extends Model
     /** @return array<string, string> */
     protected function casts(): array
     {
-        return ['unit_price' => 'decimal:2'];
+        return [
+            'issue_date' => 'date',
+            'due_date' => 'date',
+            'subtotal' => 'decimal:2',
+            'tax_total' => 'decimal:2',
+            'total' => 'decimal:2',
+        ];
     }
 }

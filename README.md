@@ -39,6 +39,8 @@ Authenticated users can manage their own customer records through `GET|POST /api
 
 Products and services share the catalog endpoints at `GET|POST /api/v1/catalog-items` and `GET|PATCH|DELETE /api/v1/catalog-items/{id}`. Each item records its type, optional owner-scoped SKU, unit price, currency, and active status.
 
+Draft invoices are available through `GET|POST /api/v1/invoices` and `GET|DELETE /api/v1/invoices/{id}`. Creation snapshots catalog descriptions and prices, calculates line and invoice totals in minor units, enforces a single currency, and requires an active customer and active catalog items owned by the authenticated user.
+
 ## Response contract
 
 Every API response uses the same top-level fields:

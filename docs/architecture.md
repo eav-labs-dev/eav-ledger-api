@@ -20,3 +20,7 @@ All responses use the stable envelope documented in the README. Domain errors ex
 ## Persistence
 
 PostgreSQL is the target runtime database. Migrations are the source of truth for schema changes. SQLite is used only for fast foundation tests; business workflow tests will run against PostgreSQL in CI.
+
+## Invoice aggregate
+
+An invoice owns immutable line snapshots of catalog descriptions, quantities, unit prices, tax rates, and calculated amounts. Draft creation runs in a database transaction, validates owner and currency boundaries, and calculates money in integer minor units before persisting decimal values. This prevents floating-point drift while retaining conventional database columns and API strings for money.

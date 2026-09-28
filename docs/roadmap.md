@@ -14,7 +14,7 @@
 - [ ] Role and resource authorization
 - [x] Customer management
 - [x] Product and service catalog
-- [ ] Invoice creation and line-item totals
+- [x] Invoice creation and line-item totals
 - [ ] Controlled invoice lifecycle
 - [ ] Payments and balance allocation
 - [ ] Receipt generation

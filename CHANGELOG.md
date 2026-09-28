@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added owner-scoped draft invoice creation, line-item snapshots, deterministic totals, filters, pagination, and safe deletion rules.
 - Added owner-scoped product and service catalog CRUD with pricing, filters, sorting, and pagination.
 - Added authenticated customer CRUD with ownership isolation, filtering, sorting, and pagination.
 - Added Sanctum token registration, login, current-user, and logout endpoints.
