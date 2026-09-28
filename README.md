@@ -6,7 +6,7 @@ Laravel billing API for customers, invoices, payments, receipts, and auditable b
 
 The Laravel 13 API is deployed from `main` to Oracle Cloud Infrastructure through GitHub Actions.
 
-- Live API: [https://ledger.env.pm](https://ledger.env.pm)
+- Live API: [https://ledger.env.pm](https://ledger.env.pm/api/v1)
 - Health check: [https://ledger.env.pm/api/v1/health](https://ledger.env.pm/api/v1/health)
 - API documentation: [https://ledger.env.pm/docs](https://ledger.env.pm/docs)
 - OpenAPI spec: [https://ledger.env.pm/openapi.json](https://ledger.env.pm/openapi.json)
