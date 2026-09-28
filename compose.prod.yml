@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: eav-ledger-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - eav_ledger_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      target: runtime
+    container_name: eav-ledger-api
+    restart: unless-stopped
+    environment:
+      APP_NAME: "EAV Ledger API"
+      APP_ENV: production
+      APP_KEY: ${APP_KEY}
+      APP_DEBUG: "false"
+      APP_URL: https://ledger.env.pm
+      APP_VERSION: ${APP_VERSION}
+      LOG_CHANNEL: stack
+      LOG_LEVEL: info
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      SESSION_DRIVER: database
+      MAIL_MAILER: log
+      RUN_MIGRATIONS: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8081:8080"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:8080/api/v1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    init: true
+    stop_grace_period: 15s
+
+volumes:
+  eav_ledger_postgres:
+    external: true
+    name: eav_ledger_postgres
