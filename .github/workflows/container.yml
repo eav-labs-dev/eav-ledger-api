@@ -1,0 +1,62 @@
+name: Container smoke test
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/container.yml'
+      - '.dockerignore'
+      - 'Dockerfile'
+      - 'compose.yaml'
+      - 'docker/**'
+      - 'app/**'
+      - 'bootstrap/**'
+      - 'config/**'
+      - 'database/**'
+      - 'public/**'
+      - 'routes/**'
+      - 'composer.json'
+      - 'composer.lock'
+  push:
+    branches:
+      - dev
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: container-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Prepare disposable environment
+        run: |
+          cp .env.example .env
+          db_password="$(openssl rand -hex 24)"
+          sed -i "s|^DB_PASSWORD=.*|DB_PASSWORD=${db_password}|" .env
+          printf '\nAPP_PORT=8080\nPOSTGRES_PORT=5432\nRUN_MIGRATIONS=true\n' >> .env
+
+      - name: Build and start application
+        run: docker compose up --detach --build --wait --wait-timeout 180
+
+      - name: Verify runtime and migrations
+        run: |
+          curl --fail --silent --show-error http://127.0.0.1:8080/api/v1/health
+          docker compose exec --no-TTY api php artisan migrate:status
+
+      - name: Show service logs on failure
+        if: failure()
+        run: docker compose logs --no-color
+
+      - name: Stop application
+        if: always()
+        run: docker compose down --volumes --remove-orphans

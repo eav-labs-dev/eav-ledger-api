@@ -1,0 +1,22 @@
+# Architecture
+
+EAV Ledger API is a modular Laravel application. HTTP controllers validate and authorize requests, application services coordinate billing rules, Eloquent models persist aggregates, and API resources own response mapping.
+
+## Initial boundaries
+
+- **Identity:** users, authentication, and authorization.
+- **Catalog:** billable products and services.
+- **Customers:** customer records and billing details.
+- **Invoicing:** invoice lines, totals, and lifecycle transitions.
+- **Payments:** payment allocation, balances, and receipts.
+- **Delivery:** PDF rendering and queued email abstractions.
+
+The MVP remains a single deployable application and database. These boundaries organize the code without introducing unnecessary services.
+
+## API contract
+
+All responses use the stable envelope documented in the README. Domain errors expose safe codes and validation details without leaking framework or database internals.
+
+## Persistence
+
+PostgreSQL is the target runtime database. Migrations are the source of truth for schema changes. SQLite is used only for fast foundation tests; business workflow tests will run against PostgreSQL in CI.
