@@ -45,6 +45,12 @@ class Invoice extends Model
         return $this->hasMany(InvoiceLine::class);
     }
 
+    /** @return HasMany<InvoiceEvent, $this> */
+    public function events(): HasMany
+    {
+        return $this->hasMany(InvoiceEvent::class);
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {

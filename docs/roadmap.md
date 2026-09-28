@@ -15,7 +15,7 @@
 - [x] Customer management
 - [x] Product and service catalog
 - [x] Invoice creation and line-item totals
-- [ ] Controlled invoice lifecycle
+- [x] Controlled invoice lifecycle
 - [ ] Payments and balance allocation
 - [ ] Receipt generation
 - [ ] PDF invoices

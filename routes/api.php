@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CatalogItemController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\InvoiceLifecycleController;
 use App\Http\Controllers\HealthController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,6 @@ Route::middleware('auth:sanctum')
         Route::apiResource('catalog-items', CatalogItemController::class)
             ->parameters(['catalog-items' => 'catalog_item']);
         Route::apiResource('invoices', InvoiceController::class)->except(['update']);
+        Route::post('invoices/{invoice}/transitions', [InvoiceLifecycleController::class, 'transition']);
+        Route::get('invoices/{invoice}/history', [InvoiceLifecycleController::class, 'history']);
     });

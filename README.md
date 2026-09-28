@@ -41,6 +41,8 @@ Products and services share the catalog endpoints at `GET|POST /api/v1/catalog-i
 
 Draft invoices are available through `GET|POST /api/v1/invoices` and `GET|DELETE /api/v1/invoices/{id}`. Creation snapshots catalog descriptions and prices, calculates line and invoice totals in minor units, enforces a single currency, and requires an active customer and active catalog items owned by the authenticated user.
 
+Transition invoices with `POST /api/v1/invoices/{id}/transitions` and inspect their ordered audit trail with `GET /api/v1/invoices/{id}/history`. The MVP lifecycle permits `draft → issued`, `draft → void`, and `issued → void`; payment workflows will own partial and paid states.
+
 ## Response contract
 
 Every API response uses the same top-level fields:
