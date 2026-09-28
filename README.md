@@ -4,16 +4,26 @@ Laravel billing API for customers, invoices, payments, receipts, and auditable b
 
 ## Status
 
-The Laravel 13 API foundation is active. Billing capabilities are being delivered incrementally through reviewed pull requests.
+The Laravel 13 API is deployed from `main` to Oracle Cloud Infrastructure through GitHub Actions.
+
+- Live API: [https://ledger.env.pm](https://ledger.env.pm)
+- Health check: [https://ledger.env.pm/api/v1/health](https://ledger.env.pm/api/v1/health)
+- API documentation: [https://ledger.env.pm/docs](https://ledger.env.pm/docs)
+- OpenAPI spec: [https://ledger.env.pm/openapi.json](https://ledger.env.pm/openapi.json)
+
+Billing capabilities continue to be delivered incrementally through reviewed pull requests.
 
 ## Stack
 
 - PHP 8.3 and Laravel 13
 - Eloquent ORM
-- PostgreSQL in development and production
+- PostgreSQL 17 in development and production
 - SQLite for fast foundation tests
+- Docker and Docker Compose
+- Oracle Cloud Infrastructure (ARM64)
+- Caddy reverse proxy and automatic HTTPS
 - PHPUnit and Laravel Pint
-- GitHub Actions CI
+- GitHub Actions CI/CD
 
 ## Quick start
 
@@ -66,13 +76,37 @@ Every API response uses the same top-level fields:
 }
 ```
 
+## Production deployment
+
+Production runs on an Oracle Cloud Infrastructure ARM64 VM using an isolated Docker Compose project:
+
+```text
+GitHub main
+   ↓
+GitHub Actions
+   ↓ SSH
+OCI Ubuntu VM
+   ↓
+Docker Compose (eav-ledger)
+   ├── Laravel API
+   └── PostgreSQL 17
+   ↓
+Caddy
+   ↓
+https://ledger.env.pm
+```
+
+The API binds only to `127.0.0.1:8081` on the host and Caddy exposes it over HTTPS. The existing container entrypoint applies Laravel migrations automatically when `RUN_MIGRATIONS=true`.
+
+Interactive Swagger UI documentation is available at [https://ledger.env.pm/docs](https://ledger.env.pm/docs), backed by the versioned OpenAPI specification at [https://ledger.env.pm/openapi.json](https://ledger.env.pm/openapi.json).
+
 ## Verification
 
 ```bash
 composer quality
 ```
 
-This runs Laravel Pint in check mode followed by the test suite.
+This runs Laravel Pint in check mode followed by the test suite. Production deploys also verify the local and public health endpoints.
 
 ## MVP scope
 

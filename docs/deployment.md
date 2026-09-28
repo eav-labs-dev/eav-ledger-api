@@ -1,28 +1,74 @@
 # Deployment
 
-The production image is built from `Dockerfile` and runs the Laravel API as the unprivileged `www-data` user on port `8080`. PostgreSQL is external state and must not be embedded in the application container.
+Production runs on an Oracle Cloud Infrastructure ARM64 VM using Docker Compose and Caddy.
+
+## Production topology
+
+```text
+ledger.env.pm
+      ↓
+    Caddy
+      ↓
+127.0.0.1:8081
+      ↓
+EAV Ledger API
+      ↓
+PostgreSQL 17
+```
+
+The production Compose project name is `eav-ledger`. PostgreSQL uses the external Docker volume `eav_ledger_postgres`, so application deploys do not own or remove the database volume.
 
 ## Required configuration
 
-- `APP_ENV=production`
-- `APP_DEBUG=false`
-- a persistent, securely generated `APP_KEY`
-- `APP_URL` set to the public HTTPS origin
-- PostgreSQL `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD`
-- `LOG_CHANNEL=stderr` or another platform-supported log sink
+The production environment file is stored on the OCI host at:
 
-The Compose setup generates an ephemeral application key only when `APP_KEY` is empty. That fallback is for local review and CI, not production.
+```text
+/opt/eav/ledger/app/.env.production
+```
+
+Required values:
+
+- `APP_KEY`: persistent Laravel application key
+- `APP_VERSION`: deployed application version
+- `DB_DATABASE=eav_ledger`
+- `DB_USERNAME=eav_user`
+- `DB_PASSWORD`: strong production database password
+
+The environment file must not be committed. Use `.env.production.example` as the reference.
+
+## Deployment flow
+
+Merges to `main` run CI. After CI succeeds, the `Deploy to OCI` workflow:
+
+1. connects to the OCI VM using the organization-level deployment secrets;
+2. resets the server checkout to `origin/main`;
+3. rebuilds and starts the isolated `eav-ledger` Compose project;
+4. waits for `http://127.0.0.1:8081/api/v1/health`;
+5. verifies `https://ledger.env.pm/api/v1/health`.
+
+The API container runs as the unprivileged `www-data` user.
 
 ## Migrations
 
-Set `RUN_MIGRATIONS=true` for a single release task or one controlled application instance. In horizontally scaled environments, run `php artisan migrate --force` once before shifting traffic and keep `RUN_MIGRATIONS=false` on normal replicas.
+The existing Docker entrypoint runs:
+
+```bash
+php artisan migrate --force
+```
+
+when `RUN_MIGRATIONS=true`.
+
+For this single-instance portfolio deployment, migrations run during application startup. In a horizontally scaled production system, run migrations as a controlled release step before shifting traffic.
 
 ## Health and shutdown
 
-- Liveness/readiness URL: `/api/v1/health`
-- Container port: `8080`
-- Stop grace period: at least 15 seconds
+- Public health URL: `https://ledger.env.pm/api/v1/health`
+- Swagger UI: `https://ledger.env.pm/docs`
+- OpenAPI specification: `https://ledger.env.pm/openapi.json`
+- Internal application port: `8080`
+- Host binding: `127.0.0.1:8081`
+- Stop grace period: 15 seconds
 
 ## Rollback
 
-Redeploy the previous immutable image and restore the most recent compatible database backup if a migration is not backward compatible. Schema changes should remain additive until the following release whenever practical.
+Redeploy a previous known-good commit or release and restore a compatible PostgreSQL backup when required. Database changes should remain backward compatible across adjacent releases whenever practical.
