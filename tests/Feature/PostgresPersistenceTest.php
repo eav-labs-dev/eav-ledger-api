@@ -10,7 +10,7 @@ final class PostgresPersistenceTest extends TestCase
 {
     public function test_ci_uses_postgresql_and_applies_the_application_schema(): void
     {
-        if (env('REQUIRE_POSTGRES') !== 'true') {
+        if (! filter_var(env('REQUIRE_POSTGRES'), FILTER_VALIDATE_BOOL)) {
             $this->markTestSkipped('PostgreSQL verification runs in its dedicated CI job.');
         }
 
