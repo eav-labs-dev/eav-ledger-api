@@ -33,6 +33,18 @@ The API runs at `http://localhost:8000`. Verify it with:
 curl http://localhost:8000/api/v1/health
 ```
 
+## Docker quick start
+
+Docker Compose provides the API and PostgreSQL 17. Set a local database password before starting the services:
+
+```bash
+cp .env.example .env
+# Set DB_PASSWORD in .env
+docker compose up --build --wait
+curl http://localhost:8080/api/v1/health
+```
+
+Stop the stack and retain its database with `docker compose down`, or remove the disposable database volume with `docker compose down --volumes`.
 Authentication uses Laravel Sanctum bearer tokens. Register with `POST /api/v1/auth/register`, log in with `POST /api/v1/auth/login`, and send the returned token as `Authorization: Bearer <token>` to access `GET /api/v1/auth/me` and `POST /api/v1/auth/logout`.
 
 Authenticated users can manage their own customer records through `GET|POST /api/v1/customers` and `GET|PATCH|DELETE /api/v1/customers/{id}`. Customer lists support `search`, `status`, `per_page`, `sort_by`, and `sort_dir` query parameters.
@@ -66,4 +78,4 @@ This runs Laravel Pint in check mode followed by the test suite.
 
 The planned MVP covers authentication, customers, products and services, invoices, controlled invoice lifecycle transitions, payments, receipts, PDF generation, queued email delivery, authorization, Docker, and deployment readiness.
 
-See [architecture notes](docs/architecture.md), the [roadmap](docs/roadmap.md), and the [project brief](docs/project-brief.md).
+See [architecture notes](docs/architecture.md), [deployment notes](docs/deployment.md), the [roadmap](docs/roadmap.md), and the [project brief](docs/project-brief.md).
