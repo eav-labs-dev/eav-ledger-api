@@ -63,6 +63,8 @@ For this single-instance portfolio deployment, migrations run during application
 ## Health and shutdown
 
 - Public health URL: `https://ledger.env.pm/api/v1/health`
+- Swagger UI: `https://ledger.env.pm/docs`
+- OpenAPI specification: `https://ledger.env.pm/openapi.json`
 - Internal application port: `8080`
 - Host binding: `127.0.0.1:8081`
 - Stop grace period: 15 seconds
