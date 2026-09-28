@@ -23,8 +23,8 @@
 
 ## Release readiness
 
-- [ ] PostgreSQL integration tests
+- [x] PostgreSQL integration tests
 - [ ] OpenAPI documentation
 - [ ] Reviewer demo workflow
-- [ ] Deployment and rollback notes
-- [ ] Final `dev` to `main` release review
+- [x] Deployment and rollback notes
+- [x] Final `dev` to `main` release review
