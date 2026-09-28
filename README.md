@@ -45,6 +45,9 @@ curl http://localhost:8080/api/v1/health
 ```
 
 Stop the stack and retain its database with `docker compose down`, or remove the disposable database volume with `docker compose down --volumes`.
+Authentication uses Laravel Sanctum bearer tokens. Register with `POST /api/v1/auth/register`, log in with `POST /api/v1/auth/login`, and send the returned token as `Authorization: Bearer <token>` to access `GET /api/v1/auth/me` and `POST /api/v1/auth/logout`.
+
+Authenticated users can manage their own customer records through `GET|POST /api/v1/customers` and `GET|PATCH|DELETE /api/v1/customers/{id}`. Customer lists support `search`, `status`, `per_page`, `sort_by`, and `sort_dir` query parameters.
 
 ## Response contract
 

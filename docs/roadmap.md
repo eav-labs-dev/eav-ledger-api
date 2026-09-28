@@ -10,8 +10,9 @@
 
 ## Billing MVP
 
-- [ ] Token authentication and authorization
-- [ ] Customer management
+- [x] Token authentication
+- [ ] Role and resource authorization
+- [x] Customer management
 - [ ] Product and service catalog
 - [ ] Invoice creation and line-item totals
 - [ ] Controlled invoice lifecycle
