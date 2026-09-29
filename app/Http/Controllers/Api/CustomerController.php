@@ -105,6 +105,15 @@ final class CustomerController extends Controller
     public function destroy(Request $request, int $id): JsonResponse
     {
         $customer = $this->ownedCustomer($request, $id);
+        if ($customer->invoices()->exists()) {
+            return ApiResponse::error(
+                code: 'CUSTOMER_HAS_INVOICES',
+                message: 'Customers referenced by invoices cannot be deleted',
+                error: null,
+                status: 409,
+            );
+        }
+
         $customer->delete();
 
         return ApiResponse::success(
