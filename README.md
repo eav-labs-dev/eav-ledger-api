@@ -65,6 +65,8 @@ Draft invoices are available through `GET|POST /api/v1/invoices` and `GET|DELETE
 
 Transition invoices with `POST /api/v1/invoices/{id}/transitions` and inspect their ordered audit trail with `GET /api/v1/invoices/{id}/history`. The MVP lifecycle permits `draft → issued`, `draft → void`, and `issued → void`; payment workflows will own partial and paid states.
 
+Record payments with `POST /api/v1/invoices/{id}/payments`, list an invoice's payments with `GET /api/v1/invoices/{id}/payments`, and retrieve a payment with `GET /api/v1/payments/{id}`. Payments enforce owner-scoped references, prevent overpayment, calculate the remaining balance, and move issued invoices through `partially_paid` to `paid`.
+
 ## Response contract
 
 Every API response uses the same top-level fields:

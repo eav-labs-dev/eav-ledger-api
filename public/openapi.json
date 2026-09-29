@@ -351,6 +351,48 @@
             "maxLength": 500
           }
         }
+      },
+      "PaymentRequest": {
+        "type": "object",
+        "required": [
+          "amount",
+          "method",
+          "paid_at"
+        ],
+        "properties": {
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "cash",
+              "bank_transfer",
+              "card",
+              "mobile_money",
+              "other"
+            ]
+          },
+          "reference": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 120
+          },
+          "paid_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000
+          }
+        }
       }
     }
   },
@@ -1045,6 +1087,97 @@
           },
           "404": {
             "description": "Invoice not found"
+          }
+        }
+      }
+    },
+    "/api/v1/invoices/{id}/payments": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "List payments for an invoice",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated payments retrieved"
+          },
+          "404": {
+            "description": "Invoice not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "Record a payment against an issued invoice",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment recorded"
+          },
+          "409": {
+            "description": "Payment is not allowed or exceeds the balance"
+          }
+        }
+      }
+    },
+    "/api/v1/payments/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "Get a payment",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment retrieved"
+          },
+          "404": {
+            "description": "Payment not found"
           }
         }
       }

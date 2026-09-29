@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added owner-scoped payment allocation with balance enforcement, idempotent references, and audited invoice status updates.
 - Extended the published OpenAPI contract with catalog, invoice, transition, and audit-history endpoints.
 - Added a non-root production image, PostgreSQL Compose environment, container smoke-test CI, and deployment notes.
 - Added controlled invoice issue/void transitions with row locking and persistent actor audit history.

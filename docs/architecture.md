@@ -26,3 +26,5 @@ PostgreSQL is the target runtime database. Migrations are the source of truth fo
 An invoice owns immutable line snapshots of catalog descriptions, quantities, unit prices, tax rates, and calculated amounts. Draft creation runs in a database transaction, validates owner and currency boundaries, and calculates money in integer minor units before persisting decimal values. This prevents floating-point drift while retaining conventional database columns and API strings for money.
 
 Lifecycle changes run under a database row lock and use an explicit transition map. Each accepted change appends an actor, previous state, next state, note, and timestamp to invoice history. Payment states remain reserved for the payment allocation boundary.
+
+Payments are append-only records applied while holding the invoice row lock. The service calculates paid and outstanding amounts in integer minor units, rejects overpayment, and advances invoice state from `issued` to `partially_paid` or `paid`. Owner-scoped external references protect webhook and operator retries from duplicate allocation.

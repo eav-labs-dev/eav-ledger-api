@@ -37,6 +37,12 @@ class User extends Authenticatable
         return $this->hasMany(Invoice::class, 'owner_id');
     }
 
+    /** @return HasMany<Payment, $this> */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'owner_id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *
