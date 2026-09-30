@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('catalog_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
-            $table->string('catalog_number', 30)->unique();
+            $table->string('catalog_number', 34)->unique();
             $table->string('type', 16);
             $table->string('sku', 64)->nullable();
             $table->string('name', 160);
