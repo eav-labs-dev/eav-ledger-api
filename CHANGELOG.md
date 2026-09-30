@@ -2,7 +2,11 @@
 
 ## Unreleased
 
+- Extended the published OpenAPI contract with catalog, invoice, transition, and audit-history endpoints.
 - Added a non-root production image, PostgreSQL Compose environment, container smoke-test CI, and deployment notes.
+- Added controlled invoice issue/void transitions with row locking and persistent actor audit history.
+- Added owner-scoped draft invoice creation, line-item snapshots, deterministic totals, filters, pagination, and safe deletion rules.
+- Added owner-scoped product and service catalog CRUD with pricing, filters, sorting, and pagination.
 - Added authenticated customer CRUD with ownership isolation, filtering, sorting, and pagination.
 - Added Sanctum token registration, login, current-user, and logout endpoints.
 - Added the Laravel 13 API foundation, stable response envelope, health endpoint, baseline tests, and CI.

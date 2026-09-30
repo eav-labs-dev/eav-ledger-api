@@ -13,9 +13,9 @@
 - [x] Token authentication
 - [ ] Role and resource authorization
 - [x] Customer management
-- [ ] Product and service catalog
-- [ ] Invoice creation and line-item totals
-- [ ] Controlled invoice lifecycle
+- [x] Product and service catalog
+- [x] Invoice creation and line-item totals
+- [x] Controlled invoice lifecycle
 - [ ] Payments and balance allocation
 - [ ] Receipt generation
 - [ ] PDF invoices
