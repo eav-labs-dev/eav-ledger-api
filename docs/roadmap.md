@@ -16,7 +16,7 @@
 - [x] Product and service catalog
 - [x] Invoice creation and line-item totals
 - [x] Controlled invoice lifecycle
-- [ ] Payments and balance allocation
+- [x] Payments and balance allocation
 - [ ] Receipt generation
 - [ ] PDF invoices
 - [ ] Queued email abstraction
