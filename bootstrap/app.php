@@ -37,12 +37,13 @@ return Application::configure(basePath: dirname(__DIR__))
                 $message = 'An unexpected error occurred';
             }
 
-            return ApiResponse::error(
+            $apiResponse = ApiResponse::error(
                 code: match ($status) {
                     401 => 'AUTHENTICATION_REQUIRED',
                     403 => 'FORBIDDEN',
                     404 => 'RESOURCE_NOT_FOUND',
                     405 => 'METHOD_NOT_ALLOWED',
+                    429 => 'RATE_LIMIT_EXCEEDED',
                     422 => 'VALIDATION_FAILED',
                     default => $status >= 500 ? 'INTERNAL_ERROR' : 'REQUEST_FAILED',
                 },
@@ -50,5 +51,15 @@ return Application::configure(basePath: dirname(__DIR__))
                 error: is_array($content) ? ($content['errors'] ?? null) : null,
                 status: $status,
             );
+
+            if ($status === 429) {
+                foreach (['Retry-After', 'X-RateLimit-Limit', 'X-RateLimit-Remaining'] as $header) {
+                    if ($response->headers->has($header)) {
+                        $apiResponse->headers->set($header, $response->headers->get($header));
+                    }
+                }
+            }
+
+            return $apiResponse;
         });
     })->create();
