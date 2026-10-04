@@ -67,6 +67,8 @@ Transition invoices with `POST /api/v1/invoices/{id}/transitions` and inspect th
 
 Authentication attempts are limited per normalized email and IP address, while authenticated API traffic is limited per user. Configure the per-minute budgets with `LEDGER_AUTH_RATE_LIMIT_PER_MINUTE` and `LEDGER_API_RATE_LIMIT_PER_MINUTE`; the health endpoint remains unthrottled for infrastructure probes.
 
+All responses include `nosniff`, anti-framing, no-referrer, and restrictive browser-feature headers. HSTS remains at Caddy because the shared edge terminates HTTPS.
+
 ## Response contract
 
 Every API response uses the same top-level fields:

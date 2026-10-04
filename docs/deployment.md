@@ -52,6 +52,8 @@ The API container runs as the unprivileged `www-data` user.
 
 Application rate limits provide a predictable baseline and return the stable `RATE_LIMIT_EXCEEDED` API envelope with HTTP 429. Keep equivalent or stricter connection, request-size, and timeout controls at Caddy or the cloud edge because application throttling does not replace perimeter protection.
 
+The application emits `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, and `Permissions-Policy` on every response. Configure HSTS at Caddy, where HTTPS terminates, so direct container health checks remain valid over loopback HTTP.
+
 ## Migrations
 
 The existing Docker entrypoint runs:
