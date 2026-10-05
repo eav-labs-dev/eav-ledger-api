@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Extended the published OpenAPI contract with catalog, invoice, transition, and audit-history endpoints.
+- Add configurable authentication and authenticated API rate limits with stable HTTP 429 errors, defensive response headers, and post-deployment header verification.
 - Added a non-root production image, PostgreSQL Compose environment, container smoke-test CI, and deployment notes.
 - Added controlled invoice issue/void transitions with row locking and persistent actor audit history.
 - Added owner-scoped draft invoice creation, line-item snapshots, deterministic totals, filters, pagination, and safe deletion rules.

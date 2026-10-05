@@ -33,6 +33,8 @@ Required values:
 - `DB_DATABASE=eav_ledger`
 - `DB_USERNAME=eav_user`
 - `DB_PASSWORD`: strong production database password
+- `LEDGER_AUTH_RATE_LIMIT_PER_MINUTE`: authentication attempts allowed per normalized email and IP (default `10`)
+- `LEDGER_API_RATE_LIMIT_PER_MINUTE`: authenticated requests allowed per user (default `120`)
 
 The environment file must not be committed. Use `.env.production.example` as the reference.
 
@@ -47,6 +49,11 @@ Merges to `main` run CI. After CI succeeds, the `Deploy to OCI` workflow:
 5. verifies `https://ledger.env.pm/api/v1/health`.
 
 The API container runs as the unprivileged `www-data` user.
+
+Application rate limits provide a predictable baseline and return the stable `RATE_LIMIT_EXCEEDED` API envelope with HTTP 429. Keep equivalent or stricter connection, request-size, and timeout controls at Caddy or the cloud edge because application throttling does not replace perimeter protection.
+
+The application emits `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, and `Permissions-Policy` on every response. Configure HSTS at Caddy, where HTTPS terminates, so direct container health checks remain valid over loopback HTTP.
+After each OCI deployment, the workflow checks the public health endpoint and fails unless all four defensive headers survive the complete HTTPS/Caddy path.
 
 ## Migrations
 

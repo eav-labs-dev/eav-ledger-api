@@ -65,6 +65,10 @@ Draft invoices are available through `GET|POST /api/v1/invoices` and `GET|DELETE
 
 Transition invoices with `POST /api/v1/invoices/{id}/transitions` and inspect their ordered audit trail with `GET /api/v1/invoices/{id}/history`. The MVP lifecycle permits `draft → issued`, `draft → void`, and `issued → void`; payment workflows will own partial and paid states.
 
+Authentication attempts are limited per normalized email and IP address, while authenticated API traffic is limited per user. Configure the per-minute budgets with `LEDGER_AUTH_RATE_LIMIT_PER_MINUTE` and `LEDGER_API_RATE_LIMIT_PER_MINUTE`; the health endpoint remains unthrottled for infrastructure probes.
+
+All responses include `nosniff`, anti-framing, no-referrer, and restrictive browser-feature headers. HSTS remains at Caddy because the shared edge terminates HTTPS.
+
 ## Response contract
 
 Every API response uses the same top-level fields:
